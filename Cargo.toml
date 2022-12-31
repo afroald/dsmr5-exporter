@@ -1,0 +1,21 @@
+[package]
+name = "dsmr5-exporter"
+authors = ["Roald Hacquebord <roald@zielma.kr>"]
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.0.32", features = ["derive"] }
+tokio = { version = "1.23.0", features = ["macros", "rt-multi-thread", "signal"] }
+tokio-util = { version = "0.7.4", features = ["codec"] }
+tokio-serial = { version = "5.4.4", features = ["codec"] }
+bytes = "1.3.0"
+hexdump = "0.1.1"
+dsmr5 = "0.2.2"
+futures = "0.3.25"
+prometheus = "0.13.3"
+backoff = { version= "0.4.0", features = ["tokio"] }
+tap = "1.0.1"
+axum = { version = "0.6.1", features = ["http1", "tokio", "macros"] }
