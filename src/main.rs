@@ -4,7 +4,6 @@ use clap::Parser;
 use dsmr5_exporter::{decoder, metrics::METRICS_TTL, Metrics};
 use futures::StreamExt;
 use std::{
-    io,
     net::{IpAddr, Ipv4Addr, SocketAddr},
     path::PathBuf,
     sync::Arc,
@@ -64,6 +63,7 @@ async fn read(
 ) -> Result<(), tokio_serial::Error> {
     let backoff = ExponentialBackoffBuilder::default()
         .with_max_interval(Duration::from_millis(5000))
+        .with_max_elapsed_time(None)
         .build();
 
     retry::<(), _, _, _, _>(backoff, || async {
@@ -91,8 +91,8 @@ async fn read(
         }
 
         Err(backoff::Error::transient(tokio_serial::Error::new(
-            tokio_serial::ErrorKind::Io(io::ErrorKind::ConnectionReset),
-            "Serial read stream ended",
+            tokio_serial::ErrorKind::Io(std::io::ErrorKind::ConnectionReset),
+            "serial read stream ended",
         )))
     })
     .await
